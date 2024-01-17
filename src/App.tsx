@@ -8,11 +8,17 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 function App() {
 
-  const client = new QueryClient();
+  const client = new QueryClient({
+    defaultOptions: {
+      queries: {
+        refetchOnWindowFocus: false,
+      },
+    },
+  });
 
   return (
-    <QueryClientProvider client={client}>
-                  <ReactQueryDevtools />
+    <QueryClientProvider  client={client}>
+      <ReactQueryDevtools />
 
       <Routes>
         <Route path="/" element={<Navigate to="/login" />} />

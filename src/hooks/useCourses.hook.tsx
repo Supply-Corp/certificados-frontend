@@ -65,7 +65,8 @@ export const useCourses = () => {
     const courses = useQuery({
         queryKey: ['courses', { page, limit, search }],
         queryFn: ()=> courseService.list(page, limit, search),
-        refetchOnWindowFocus: false
+        refetchOnWindowFocus: false,
+        staleTime: 1000 * 10,
     });
 
     useEffect(()=> {

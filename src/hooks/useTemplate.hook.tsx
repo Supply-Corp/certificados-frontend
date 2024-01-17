@@ -59,7 +59,8 @@ export const useTemplate = () => {
     const list = useQuery({
         queryKey: ['templates', { page, limit, search }],
         queryFn: ()=> templateService.list(page, limit, search),
-        refetchOnWindowFocus: false
+        refetchOnWindowFocus: false,
+        staleTime: 1000 * 10,
     });
 
     useEffect(()=> {
