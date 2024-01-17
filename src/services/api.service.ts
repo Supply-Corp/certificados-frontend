@@ -3,8 +3,7 @@ import axios, { AxiosError } from "axios";
 
 
 export class ApiService {
-  // private static httpUrl = 'https://api.institutoelevateperu.com/api';
-  private static httpUrl = 'http://localhost:3000/api';
+  private static httpUrl = import.meta.env.VITE_URL_BACKEND;
 
   // Agregar interceptores globalmente
   static initializeInterceptors() {
