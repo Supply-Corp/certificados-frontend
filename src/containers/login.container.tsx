@@ -30,7 +30,7 @@ export const LoginContainer = () => {
                     </Col>
 
                     <Col span={24}>
-                        <Form form={form} onFinish={submit}>
+                        <Form form={form} onFinish={ submit.mutate }>
                             <Form.Item name="email" rules={rulesEmail}>
                                 <Input
                                     prefix={<BsEnvelope />}
@@ -47,8 +47,15 @@ export const LoginContainer = () => {
                                 />
                             </Form.Item>
                             <Form.Item>
-                                <Button type="primary" shape="round" size="large" htmlType="submit" block>
-                                Entrar
+                                <Button 
+                                    type="primary" 
+                                    shape="round" 
+                                    size="large" 
+                                    htmlType="submit"
+                                    loading={submit.isPending}
+                                    block
+                                >
+                                    Entrar
                                 </Button>
                             </Form.Item>
                         </Form>

@@ -1,13 +1,8 @@
 import { App, Form } from "antd"
 import { LoginService } from "../services";
-import { AxiosError } from "axios";
 import { CustomError } from "../services/errors.service";
 import { useSession } from "../context/useContext";
-
-interface Login {
-    email: string,
-    password: string
-}
+import { useMutation } from "@tanstack/react-query";
 
 export function useLogin() {
 
@@ -38,13 +33,11 @@ export function useLogin() {
         },
     ];
 
-    const submit = async (data: Login) => {
-        const { email, password } = data;
-        
-        LoginService.login({ email, password })
-        .then((login) => initSession(login))
-        .catch((error: AxiosError) => CustomError.Error(error, message))
-    }
+    const submit = useMutation({
+        mutationFn: (data: { email: string, password: string }) => LoginService.login(data),
+        onSuccess: (user) => initSession(user),
+        onError: (error) => CustomError.Error(error, message)
+    });
 
     return {
         form,
