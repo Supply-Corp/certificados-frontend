@@ -15,8 +15,6 @@ export const useTemplate = () => {
     const [limit] = useState(10);
     const url = import.meta.env.VITE_URL_FRONTEND;
 
-    console.log({ url, env: import.meta.env })
-
     const columns = [
         {
             title: 'Nombre',
@@ -61,6 +59,7 @@ export const useTemplate = () => {
     const list = useQuery({
         queryKey: ['templates', { page, limit, search }],
         queryFn: ()=> templateService.list(page, limit, search),
+        refetchOnWindowFocus: false
     });
 
     useEffect(()=> {

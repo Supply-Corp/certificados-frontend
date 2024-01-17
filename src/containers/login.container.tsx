@@ -52,7 +52,7 @@ export const LoginContainer = () => {
                                     shape="round" 
                                     size="large" 
                                     htmlType="submit"
-                                    loading={submit.isPending}
+                                    loading={ submit.isPending }
                                     block
                                 >
                                     Entrar

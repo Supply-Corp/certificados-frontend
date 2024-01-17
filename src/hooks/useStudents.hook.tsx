@@ -66,6 +66,7 @@ export const useStudent = () => {
     const list = useQuery({
         queryKey: ['templates', { page, limit, search }],
         queryFn: ()=> service.list(page, limit, search),
+        refetchOnWindowFocus: false
     });
 
     useEffect(()=> {
@@ -88,9 +89,7 @@ export const useStudent = () => {
     const [edit, setEdit] = useState(false);
 
     const onCreate = useMutation({
-        mutationFn: (data: Student) => 
-        service.create(data)  
-        ,
+        mutationFn: (data: Student) => service.create(data)  ,
         onSuccess: (data) => {
             message.success(`${ data?.name} creado correctamente.`);
             list.refetch();
@@ -103,9 +102,7 @@ export const useStudent = () => {
     });
 
     const onUpdate = useMutation({
-        mutationFn: (data: Student) => 
-            service.update(data)
-        ,
+        mutationFn: (data: Student) => service.update(data),
         onSuccess: (data) => {
             message.success(`${ data?.name} actualizado correctamente.`);
             list.refetch();
@@ -114,7 +111,7 @@ export const useStudent = () => {
         },
         onError: (error: AxiosError) => {
             CustomError.Error(error, message)
-        }
+        }, 
     });
 
     const editRegister = (data: Student) => {

@@ -10,7 +10,6 @@ export function useLogin() {
     const { message } = App.useApp();
     const { initSession } = useSession()
 
-
     const rulesEmail = [
         {
             required: true,
