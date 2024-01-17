@@ -86,18 +86,3 @@ export const CoursesContainer = () => {
         </Row>
     )
 }
-
-// const FormRegister: FC = (open: boolean, onCancel: ) => {
-
-//     return (
-//         <Modal
-//             open={open}
-//             footer={false}
-//             title="Información"
-//             onCancel={onCancel}
-//             width={400}
-//         >
-//             
-//         </Modal>
-//     )
-// }
