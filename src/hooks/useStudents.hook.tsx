@@ -64,7 +64,7 @@ export const useStudent = () => {
     const [search, setSearch] = useState('');
 
     const list = useQuery({
-        queryKey: ['templates', { page, limit, search }],
+        queryKey: ['students', { page, limit, search }],
         queryFn: ()=> service.list(page, limit, search),
         refetchOnWindowFocus: false,
         staleTime: 1000 * 60 * 10,
