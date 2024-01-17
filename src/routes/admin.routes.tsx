@@ -3,6 +3,7 @@ import { useSession } from "../context/useContext"
 import { FC, ReactNode } from "react"
 import { LayoutAdmin } from "../components"
 import { AdminView, CoursesView, StudentsView, TemplateView } from "../views"
+import { LoadingContainer } from "../containers"
 
 export const AdminRoutes = () => {
     return (
@@ -19,15 +20,15 @@ export const AdminRoutes = () => {
     )
 }
 
-export const PrivateRoute: FC<{ children: ReactNode}> = ({ children }) => {
-    const { user } = useSession();
-    
+export const PrivateRoute: FC<{ children: ReactNode}> = ({ children }) => {    
+    const { user, logged } = useSession();
     const role = user?.user?.role;
-    if( role === 'ADMIN') {
-        return children
-    } else if( role === 'USER') {
+
+    if( !logged ) {
+        return <LoadingContainer />
+    } else if( role === 'ADMIN' ) {
+        return children;
+    } else if( role === 'USER' ) {
         return <Navigate to="/user" />
-    } else {
-        return <Navigate to="/login" />
     }
 }

@@ -1,5 +1,5 @@
 import { AxiosError } from "axios"
-import { IAuth } from "../context/useContext"
+import { IAuth, IUser } from "../context/useContext"
 import { ApiService } from "./api.service"
 
 interface ILogin {
@@ -18,4 +18,13 @@ export class LoginService {
         }
     }
 
+
+    static async user ():Promise<IUser> {
+        try {
+            const data = await ApiService.get('/auth/user');
+            return data as IUser;
+        } catch (error) {
+            throw error as AxiosError;
+        }
+    }
 }

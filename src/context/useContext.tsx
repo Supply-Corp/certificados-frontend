@@ -6,6 +6,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { ApiService } from "../services/api.service";
 import { CustomError } from "../services/errors.service";
 import { App } from "antd";
+import { useMutation } from "@tanstack/react-query";
+import { LoginService } from "../services";
 
 interface ISessionContext {
     children: ReactNode
@@ -35,38 +37,33 @@ const SessionProvider: FC<ISessionContext> = ({ children }) => {
     const navigate = useNavigate();
     const { message } = App.useApp();
     const { pathname } = useLocation()
-
+    const token = window.localStorage.getItem('session');
+    
     const initialize = () => {
-        const token = window.localStorage.getItem('session');
-        if(token) readSession( token );
+        if(token) return readSession.mutate();
+        return setUrlRedirect('/login')
     }
 
-    const readSession = async ( token: string) => {
-        try {
-            const { data } = await ApiService.get('/auth/user');
-            const information = { token: token, user: data as IUser };
-
-            initSession(information, pathname);
-
-        } catch (error) {
-            return CustomError.Error(error, message);
-        }
-    }
+    const readSession = useMutation({
+        mutationFn: () => LoginService.user(),
+        onSuccess: (user) => (user && token) && initSession({ user, token }, pathname),
+        onError: (error) => CustomError.Error(error, message)
+    });
 
     const [urlRedirect, setUrlRedirect] = useState('');
 
     const initSession = (data: IAuth, path: string) => {
-        console.log(data, path)
+
         dispatch({ user: data, logged: true, type: types.login });
         window.localStorage.setItem('session', data.token);
+
         (data.user.role === 'USER') 
-        ? setUrlRedirect( path ? path: 'user' )
-        : setUrlRedirect( path ? path:'admin')
+            ? setUrlRedirect( path ? path: 'user' )
+            : setUrlRedirect( path ? path:'admin')
     }
 
     useEffect(()=> {
         if(urlRedirect)  {
-            console.log(urlRedirect)
             navigate(urlRedirect)
             setUrlRedirect('');
         }
@@ -98,7 +95,8 @@ const SessionProvider: FC<ISessionContext> = ({ children }) => {
             value={{
                 initSession,
                 ...user,
-                menuOptionClick
+                menuOptionClick,
+                readSession
             }}
         >
             { children }
