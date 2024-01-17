@@ -60,7 +60,7 @@ export const useTemplate = () => {
         queryKey: ['templates', { page, limit, search }],
         queryFn: ()=> templateService.list(page, limit, search),
         refetchOnWindowFocus: false,
-        staleTime: 1000 * 10,
+        staleTime: 1000 * 60 * 10,
     });
 
     useEffect(()=> {

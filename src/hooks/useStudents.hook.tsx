@@ -67,7 +67,7 @@ export const useStudent = () => {
         queryKey: ['templates', { page, limit, search }],
         queryFn: ()=> service.list(page, limit, search),
         refetchOnWindowFocus: false,
-        staleTime: 1000 * 10
+        staleTime: 1000 * 60 * 10,
     });
 
     useEffect(()=> {
