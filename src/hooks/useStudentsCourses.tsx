@@ -1,55 +1,49 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { CustomError, Student, StudentsService } from "../services";
-import { App, Button, Form, Popconfirm, Row } from "antd";
+import { CoursesService, CustomError, StudentCourse, StudentsCoursesService, TemplatesService, UserCourse } from "../services";
+import { App, Button, Form, Image, Popconfirm, Row } from "antd";
 import { BsPencil, BsTrash } from "react-icons/bs";
 import { useDebounce } from 'usehooks-ts'
 import { AxiosError } from "axios";
+import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
-export const useStudent = () => {
+export const useStudentsCourses = () => {
 
-    const service = new StudentsService();
+    const service = new StudentsCoursesService();
     const navigate = useNavigate();
     const { message } = App.useApp();
     const [page, setPage] = useState(1);
     const [limit] = useState(10);
+    const { id } = useParams();
+    const url = import.meta.env.VITE_URL_FRONTEND;
 
     const columns = [
         {
-            title: 'Nombre',
+            title: 'Identificador',
             key: 'name',
-            dataIndex: 'name'
+            dataIndex: 'identifier'
         },
         {
-            title: 'Apellido',
-            key: 'lastName',
-            dataIndex: 'lastName'
+            title: 'Curso',
+            key: 'course',
+            render: (record: StudentCourse) => record.course.name
         },
         {
-            title: 'Nro de documento',
-            key: 'documentNumber',
-            dataIndex: 'documentNumber'
+            title: 'Plantilla',
+            key: 'template',
+            render: (record: StudentCourse) => <Image width={100} src={`${ url }/${ record.template.file }`} />
         },
         {
-            title: 'Email',
-            key: 'email',
-            dataIndex: 'email'
-        },
-        {
-            title: 'Información',
-            key: 'info',
-            render: (record: Student) => (
-                <Button type="text" onClick={()=> navigate(`courses/${ record.id  }`)}>
-                    Ver cursos
-                </Button>
-            )
+            title: 'Horas de curso',
+            key: 'hours',
+            dataIndex: 'hours'
         },
         {
             title: 'Opciones',
             key: 'options',
-            render: (record: Student) => <Row style={{ gap: 8 }}>
+            render: (record: StudentCourse) => <Row style={{ gap: 8 }}>
                 <Button 
                     shape="circle" 
                     type="primary" 
@@ -74,10 +68,22 @@ export const useStudent = () => {
     const [search, setSearch] = useState('');
 
     const list = useQuery({
-        queryKey: ['students', { page, limit, search }],
-        queryFn: ()=> service.list(page, limit, search),
+        queryKey: [`user-courses-${id}`, { page, limit, search }],
+        queryFn: ()=> service.list(page, limit, search, +id!),
         refetchOnWindowFocus: false,
         staleTime: 1000 * 60 * 10,
+    });
+
+    const courses = useQuery({
+        queryKey: [`list-courses`],
+        queryFn: ()=> CoursesService.all(),
+        refetchOnWindowFocus: false,
+    });
+
+    const templates = useQuery({
+        queryKey: [`list-templates`],
+        queryFn: ()=> TemplatesService.all(),
+        refetchOnWindowFocus: false,
     });
 
     useEffect(()=> {
@@ -86,8 +92,8 @@ export const useStudent = () => {
 
     const onDelete = useMutation({
       mutationFn: (id: number) => service.delete(id),
-      onSuccess: (data) => {
-        message.success(`${ data?.name} eliminado.`);
+      onSuccess: () => {
+        message.success(`Curso eliminado correctamente.`);
         list.refetch();
       },
       onError: (error: AxiosError) => {
@@ -99,10 +105,14 @@ export const useStudent = () => {
     const [modalCreate, setModalCreate] = useState(false);
     const [edit, setEdit] = useState(false);
 
+    useEffect(() => {
+        if( id ) form.setFieldValue('userId', +id)
+    },[id])
+
     const onCreate = useMutation({
-        mutationFn: (data: Student) => service.create(data)  ,
-        onSuccess: (data) => {
-            message.success(`${ data?.name} creado correctamente.`);
+        mutationFn: (data: UserCourse) => service.create(data)  ,
+        onSuccess: () => {
+            message.success(`Curso agregado creado correctamente.`);
             list.refetch();
             form.resetFields();
             setModalCreate(false);
@@ -113,9 +123,9 @@ export const useStudent = () => {
     });
 
     const onUpdate = useMutation({
-        mutationFn: (data: Student) => service.update(data),
-        onSuccess: (data) => {
-            message.success(`${ data?.name} actualizado correctamente.`);
+        mutationFn: (data: StudentCourse) => service.update(data),
+        onSuccess: () => {
+            message.success(`Curso actualizado correctamente.`);
             list.refetch();
             form.resetFields();
             setModalCreate(false);
@@ -125,12 +135,13 @@ export const useStudent = () => {
         }, 
     });
 
-    const editRegister = (data: Student) => {
+    const editRegister = (data: StudentCourse) => {
         form.setFieldValue('id', data.id);
-        form.setFieldValue('name', data.name);
-        form.setFieldValue('lastName', data.lastName);
-        form.setFieldValue('documentNumber', data.documentNumber);
-        form.setFieldValue('email', data.email);
+        form.setFieldValue('userId', data.userId);
+        form.setFieldValue('courseId', data.courseId);
+        form.setFieldValue('templateId', data.templateId);
+        form.setFieldValue('hours', data.hours);
+
         setModalCreate(true);
         setEdit(true);
     }
@@ -139,6 +150,8 @@ export const useStudent = () => {
         if( !modalCreate ) {
             setEdit(false);
             form.resetFields();
+        } else if(id) {
+            form.setFieldValue('userId', +id)
         }
     },[modalCreate]);
     
@@ -154,5 +167,10 @@ export const useStudent = () => {
         form,
         edit,
         onUpdate,
+
+        courses,
+        templates,
+
+        navigate
     }
 }

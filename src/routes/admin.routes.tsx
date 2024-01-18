@@ -2,7 +2,7 @@ import { Navigate, Route, Routes } from "react-router-dom"
 import { useSession } from "../context/useContext"
 import { FC, ReactNode } from "react"
 import { LayoutAdmin } from "../components"
-import { AdminView, CoursesView, StudentsView, TemplateView } from "../views"
+import { AdminView, CoursesView, StudentsCoursesView, StudentsView, TemplateView } from "../views"
 import { LoadingContainer } from "../containers"
 
 export const AdminRoutes = () => {
@@ -14,6 +14,7 @@ export const AdminRoutes = () => {
                     <Route path="/courses" element={<CoursesView />} />
                     <Route path="/templates" element={<TemplateView />} />
                     <Route path="/users" element={<StudentsView />} />
+                    <Route path="/users/courses/:id" element={<StudentsCoursesView />} />
                 </Routes>
             </LayoutAdmin>
         </PrivateRoute>

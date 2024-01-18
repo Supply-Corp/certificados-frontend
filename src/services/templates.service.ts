@@ -13,6 +13,15 @@ export interface Template {
 
 export class TemplatesService {
 
+    static all = async (): Promise<{ templates: Template[] }> => {
+        try {
+            const { templates } = await ApiService.get(`/templates/all`);
+                return { templates };
+            } catch (error) {
+                throw `${ error }`;
+        }
+    };
+
     list = async (page: number, limit: number, search: string): Promise<{ total: number; templates: Template[] }> => {
         try {
             const { total, templates } = await ApiService.get(`/templates?page=${page}&limit=${limit}&search=${search}`);

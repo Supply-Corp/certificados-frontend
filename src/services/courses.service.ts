@@ -13,6 +13,15 @@ export interface Course {
 
 export class CoursesService {
 
+    static all = async (): Promise<{ courses: Course[] }> => {
+        try {
+            const { courses } = await ApiService.get(`/courses/all`);
+                return { courses };
+            } catch (error) {
+                throw `${ error }`;
+        }
+    };
+
     list = async (page: number, limit: number, search: string): Promise<{ total: number; courses: Course[] }> => {
         try {
             const { total, courses } = await ApiService.get(`/courses?page=${page}&limit=${limit}&search=${search}`);
