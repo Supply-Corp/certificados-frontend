@@ -35,19 +35,19 @@ export const StudentsCoursesContainer = () => {
                             <h1>Cursos de { list.data?.user.name}</h1>
                         </Row>
                     </Col>
-                    {/* <Col span={6}>
+                    <Col span={6}>
                         <Row justify={'end'} gutter={[0, 10]}>
                             <Col>
                                 <Button type="primary" onClick={()=>setModalCreate(true)}>Agregar nuevo</Button>
                             </Col>
-                            <Col span={24}>
+                            {/* <Col span={24}>
                                 <Input.Search 
                                     placeholder="Buscar por nombre"
                                     onChange={(e) => setValue(e.target.value)}
                                 />
-                            </Col>
+                            </Col> */}
                         </Row>
-                    </Col> */}
+                    </Col>
                 </Row>
             </Col>
             <Col span={24}>
