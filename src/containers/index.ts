@@ -5,3 +5,4 @@ export * from './templates.container';
 export * from './user.container';
 export * from './loading.container';
 export * from './students-courses.container';
+export * from './courses-modules.container';

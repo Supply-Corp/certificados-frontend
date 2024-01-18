@@ -6,11 +6,13 @@ import { App, Button, Form, Popconfirm, Row } from "antd";
 import { BsPencil, BsTrash } from "react-icons/bs";
 import { useDebounce } from 'usehooks-ts'
 import { AxiosError } from "axios";
+import { useNavigate } from "react-router-dom";
 
 export const useCourses = () => {
 
     const courseService = new CoursesService();
     const { message } = App.useApp();
+    const navigate = useNavigate();
     const [page, setPage] = useState(1);
     const [limit] = useState(10);
 
@@ -29,6 +31,15 @@ export const useCourses = () => {
             title: 'Fecha final',
             key: 'endDate',
             render: (record: Course) => dayjs(record.endDate).format('DD/MM/YYYY')
+        },
+        {
+            title: 'Módulos',
+            key: 'modules',
+            render: (record: Course) => (
+                <Button type="text" onClick={()=> navigate(`modules/${ record.id  }`)}>
+                    Módulos del curso
+                </Button>
+            )
         },
         {
             title: 'Opciones',
