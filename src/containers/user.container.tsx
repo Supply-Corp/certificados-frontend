@@ -4,7 +4,7 @@ import { useUser } from "../hooks/useUser.hook"
 
 export const UserContainer = () => {
 
-    const { columns } = useUser();
+    const { columns, courses } = useUser();
 
     return (
         <Row gutter={[0, 20]}>
@@ -14,6 +14,7 @@ export const UserContainer = () => {
             <Col span={24}>
                 <Table 
                     columns={columns}
+                    dataSource={courses.data}
                 />
             </Col>
         </Row>
