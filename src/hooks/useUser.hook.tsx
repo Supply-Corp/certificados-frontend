@@ -1,6 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { UserService } from "../services/user.service";
-import { useEffect } from "react";
 import { StudentCourse } from "../services";
 import dayjs from 'dayjs';
 import { Button } from "antd";
