@@ -22,9 +22,14 @@ export const useTemplate = () => {
             dataIndex: 'name'
         },
         {
-            title: 'Plantilla',
+            title: 'Certificado',
             key: 'template',
-            render: (record: Template) => <Image  width={100} src={`${ url }/${ record.file }`} />
+            render: (record: Template) => <Image width={100} src={`${ url }/${ record.certified }`} />
+        },
+        {
+            title: 'Constancia',
+            key: 'template',
+            render: (record: Template) => <Image height={80} src={`${ url }/${ record.certifiedConstancy }`} />
         },
         {
             title: 'Opciones',
@@ -82,6 +87,7 @@ export const useTemplate = () => {
     const [modalCreate, setModalCreate] = useState(false);
     const [edit, setEdit] = useState(false);
     const [fileList, setFileList] = useState<any>([]);
+    const [fileListTwo, setFileListTwo] = useState<any>([]);
 
     const propsFile = {
         beforeUpload: (file: File) => {
@@ -89,10 +95,16 @@ export const useTemplate = () => {
             return false;
         }
     };
+    const propsFileTwo = {
+        beforeUpload: (file: File) => {
+            setFileListTwo([file])
+            return false;
+        }
+    };
 
     const onCreate = useMutation({
-        mutationFn: (data: { name: string, file: File }) => 
-            templateService.create(data.name, data.file)  
+        mutationFn: (data: { name: string, file: File, file2: File }) => 
+            templateService.create(data.name, data.file, data.file2)  
         ,
         onSuccess: (data) => {
             message.success(`${ data?.name} creado correctamente.`);
@@ -107,8 +119,8 @@ export const useTemplate = () => {
     });
 
     const onUpdate = useMutation({
-        mutationFn: (data: { id: number, name: string, file: File}) => 
-            templateService.update(data.id, data.name, data.file)
+        mutationFn: (data: { id: number, name: string, file: File, file2: File}) => 
+            templateService.update(data.id, data.name, data.file, data.file2)
         ,
         onSuccess: (data) => {
             message.success(`${ data?.name} actualizado correctamente.`);
@@ -149,6 +161,8 @@ export const useTemplate = () => {
         edit,
         onUpdate,
         propsFile,
-        fileList
+        fileList,
+        fileListTwo,
+        propsFileTwo
     }
 }

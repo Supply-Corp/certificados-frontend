@@ -1,11 +1,15 @@
-import { useNavigate } from "react-router-dom"
 
 export const AdminView = () => {
-
-    const navigate = useNavigate();
     
-    return (<>
-        hi adimn
-        <button onClick={()=> navigate('/user')}>user</button>
-    </>)
+    const style = {
+        width: '100%',
+        height: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+    }
+
+    return (<div style={style}>
+        
+    </div>)
 }

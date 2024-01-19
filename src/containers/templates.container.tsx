@@ -17,7 +17,9 @@ export const TemplatesContainer = () => {
         form,
         edit,
         propsFile,
-        fileList
+        propsFileTwo,
+        fileList,
+        fileListTwo
     } = useTemplate()
 
     return (
@@ -64,8 +66,7 @@ export const TemplatesContainer = () => {
                             <Form.Item name="name" label="Nombre" rules={[requireRule]}>
                                 <Input size="large" placeholder="Nombre del curso" />
                             </Form.Item>
-                            <Form.Item name="file" label="Plantilla" rules={!edit ? [requireRule] : []}>
-
+                            <Form.Item name="file" label="Certificado (plantilla)" rules={!edit ? [requireRule] : []}>
                                 <Upload 
                                     multiple={false} 
                                     maxCount={1} 
@@ -74,7 +75,20 @@ export const TemplatesContainer = () => {
                                     style={{ width: '100%'}}
                                 >
                                     <Button style={{ width: '100%'}} > 
-                                        Seleccionar plantilla
+                                        Seleccionar certificado
+                                    </Button>
+                                </Upload>
+                            </Form.Item>
+                            <Form.Item name="file2" label="Constancia (plantilla)" rules={!edit ? [requireRule] : []}>
+                                <Upload 
+                                    multiple={false} 
+                                    maxCount={1} 
+                                    {...propsFileTwo}
+                                    fileList={fileListTwo}
+                                    style={{ width: '100%'}}
+                                >
+                                    <Button style={{ width: '100%'}} > 
+                                        Seleccionar constancia
                                     </Button>
                                 </Upload>
                             </Form.Item>

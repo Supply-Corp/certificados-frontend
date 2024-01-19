@@ -5,7 +5,8 @@ import { ApiService } from "./api.service";
 export interface Template {
   id: number;
   name: string;
-  file: string;
+  certified: string;
+  certifiedConstancy: string;
   state: "ACTIVE" | "DELETED";
   createdAt: Date;
   updatedAt: Date;
@@ -37,11 +38,13 @@ export class TemplatesService {
         }
     };
 
-    create = async (name: string, file: any):Promise<Template | AxiosError> => {
+    create = async (name: string, file: any, file2: any):Promise<Template | AxiosError> => {
         try {
+
             const formData = new FormData();
             formData.append('name', name);
             formData.append('file', file.file);
+            formData.append('file2', file2.file);
 
             const data = await ApiService.post(`/templates`, formData);
             return data as Template;
@@ -50,12 +53,13 @@ export class TemplatesService {
         }
     };
 
-    update = async (id: number, name: string, file?: any):Promise<Template | AxiosError> => {
+    update = async (id: number, name: string, file?: any, file2?:any):Promise<Template | AxiosError> => {
         try {
 
             const formData = new FormData();
             formData.append('name', name);
             (file) && formData.append('file', file.file);
+            (file2) && formData.append('file2', file2.file);
 
             const data = await ApiService.put(`/templates/${id}`, formData);
             return data as Template;
