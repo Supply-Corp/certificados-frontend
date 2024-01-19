@@ -14,6 +14,7 @@ export const UserContainer = () => {
             <Col span={24}>
                 <Table 
                     columns={columns}
+                    rowKey={(key)=> key.id}
                     dataSource={courses.data}
                 />
             </Col>

@@ -31,7 +31,7 @@ export const useUser = () => {
             title: 'Certificado',
             width: 110,
             render: (record: StudentCourse) => (
-                <Button type="text" onClick={() => downloadOne.mutate(record.identifier)}>Descargar</Button>
+                <Button type="text" key={record.id} loading={downloadOne.isPending} onClick={() => downloadOne.mutate(record.identifier)}>Descargar</Button>
             )
         },
         {
@@ -59,6 +59,6 @@ export const useUser = () => {
 
     return {
         columns,
-        courses
+        courses,
     }
 }
