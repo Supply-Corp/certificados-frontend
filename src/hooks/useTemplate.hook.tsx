@@ -112,6 +112,7 @@ export const useTemplate = () => {
             form.resetFields();
             setModalCreate(false);
             setFileList([])
+            setFileListTwo([])
         },
         onError: (error: AxiosError) => {
           CustomError.Error(error, message)
@@ -127,7 +128,8 @@ export const useTemplate = () => {
             list.refetch();
             form.resetFields();
             setModalCreate(false);
-            setFileList([])
+            setFileList([]);
+            setFileListTwo([]);
         },
         onError: (error: AxiosError) => {
             CustomError.Error(error, message)
