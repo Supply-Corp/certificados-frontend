@@ -33,7 +33,7 @@ export const useStudentsCourses = () => {
         {
             title: 'Plantilla',
             key: 'template',
-            render: (record: StudentCourse) => <Image width={100} src={`${ url }/${ record.template.file }`} />
+            render: (record: StudentCourse) => <Image width={100} src={`${ url }/${ record.template.certified }`} />
         },
         {
             title: 'Horas de curso',
