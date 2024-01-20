@@ -11,6 +11,7 @@ export interface StudentCourse {
   templateId: number;
   courseId:number;
   hours: number;
+  points: string;
   template: Template,
   course: Course
   createdAt: Date;
@@ -22,7 +23,8 @@ export interface UserCourse {
     userId: number,
     templateId: number,
     courseId: number,
-    hours: number
+    hours: number,
+    points: string
 }
 
 interface ResultCourses {

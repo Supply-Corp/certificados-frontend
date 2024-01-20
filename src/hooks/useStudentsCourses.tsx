@@ -41,6 +41,11 @@ export const useStudentsCourses = () => {
             dataIndex: 'hours'
         },
         {
+            title: 'Nota del alumno',
+            key: 'points',
+            dataIndex: 'points'
+        },
+        {
             title: 'Opciones',
             key: 'options',
             render: (record: StudentCourse) => <Row style={{ gap: 8 }}>
@@ -141,6 +146,7 @@ export const useStudentsCourses = () => {
         form.setFieldValue('courseId', data.courseId);
         form.setFieldValue('templateId', data.templateId);
         form.setFieldValue('hours', data.hours);
+        form.setFieldValue('points', data.points);
 
         setModalCreate(true);
         setEdit(true);

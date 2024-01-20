@@ -4,11 +4,14 @@ import { StudentCourse } from "../services";
 import dayjs from 'dayjs';
 import { Button } from "antd";
 import { ApiService } from '../services/api.service';
+import { useState } from "react";
 
 
 export const useUser = () => {
 
     const service = new UserService();
+    const [generate, setGenerate] = useState(0);
+    const [generateConstancy, setGenerateConstancy] = useState(0);
 
     const columns = [
         {
@@ -31,7 +34,17 @@ export const useUser = () => {
             title: 'Certificado',
             width: 110,
             render: (record: StudentCourse) => (
-                <Button type="text" key={record.id} loading={downloadOne.isPending} onClick={() => downloadOne.mutate(record.identifier)}>Descargar</Button>
+                <Button 
+                    type="text" 
+                    key={record.id} 
+                    loading={record.id === generate} 
+                    onClick={() => {
+                        downloadOne.mutate(record.identifier);
+                        setGenerate(record.id)
+                    }}
+                >
+                    Descargar
+                </Button>
             )
         },
         {
@@ -39,7 +52,17 @@ export const useUser = () => {
             title: 'Constancia',
             width: 110,
             render: (record: StudentCourse) => (
-                <Button type="text" onClick={() => downloadOne.mutate(record.identifier)}>Descargar</Button>
+                <Button 
+                    type="text" 
+                    key={record.id} 
+                    loading={record.id === generateConstancy} 
+                    onClick={() => {
+                        downloadTwo.mutate(record.identifier);
+                        setGenerateConstancy(record.id)
+                    }}
+                >
+                    Descargar
+                </Button>
             )
         },
     ];
@@ -47,7 +70,22 @@ export const useUser = () => {
     const downloadOne = useMutation({
         mutationFn: (identifier: string) => service.downloadCertified(identifier),
         onSuccess: (file) => {
-            ApiService.download(`../certified/${ file }`, file)
+            ApiService.download(`../certified/${ file }`, file);
+            setGenerate(0)
+        },
+        onError: () => {
+            setGenerate(0)
+        }
+    })
+
+    const downloadTwo = useMutation({
+        mutationFn: (identifier: string) => service.downloadConstancy(identifier),
+        onSuccess: (file) => {
+            ApiService.download(`../constancy/${ file }`, file);
+            setGenerateConstancy(0)
+        },
+        onError: () => {
+            setGenerateConstancy(0)
         }
     })
 

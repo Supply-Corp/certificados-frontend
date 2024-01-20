@@ -22,4 +22,13 @@ export class UserService {
             throw error as AxiosError;
         }
     }
+
+    downloadConstancy = async ( identifier: string ): Promise<string> => {
+        try {
+            const fileName = await ApiService.get(`/student/constancy/${ identifier }`);
+            return fileName;
+        } catch (error) {
+            throw error as AxiosError;
+        }
+    }
 }

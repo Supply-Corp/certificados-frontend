@@ -89,6 +89,9 @@ export const StudentsCoursesContainer = () => {
                             <Form.Item name="hours" label="Horas cursadas" rules={[requireRule]}>
                                 <Input type="number" size="large" placeholder="30" />
                             </Form.Item>
+                            <Form.Item name="points" label="Nota del curso" rules={[requireRule]}>
+                                <Input size="large" placeholder="20.00 (Veinte y 00/20)" />
+                            </Form.Item>
                             <Form.Item>
                                 <Button 
                                     type="primary" 
