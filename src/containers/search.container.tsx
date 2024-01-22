@@ -23,6 +23,7 @@ export const SearchContainer = () => {
                                     size='large' 
                                     placeholder='Número de certificado' 
                                     loading={searchMutation.isPending}
+                                    onSearch={()=> searchMutation.mutate}
                                 />
                             </Form.Item>
                         </Form>
