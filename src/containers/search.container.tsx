@@ -22,6 +22,7 @@ export const SearchContainer = () => {
                                 <Input.Search 
                                     size='large' 
                                     placeholder='Número de certificado' 
+                                    loading={searchMutation.isPending}
                                 />
                             </Form.Item>
                         </Form>
