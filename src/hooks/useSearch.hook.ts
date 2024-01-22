@@ -29,6 +29,7 @@ export const useSearch = () => {
 
     return {
         searchMutation,
+        setSearchParams,
         info,
         form
     }
