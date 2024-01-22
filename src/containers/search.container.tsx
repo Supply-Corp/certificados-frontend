@@ -18,12 +18,12 @@ export const SearchContainer = () => {
                 <Row justify={'center'} style={{ marginTop: 40 }}>
                     <Col span={8}>
                         <Form onFinish={searchMutation.mutate} form={form}>
-                            <Form.Item name="search">
+                            <Form.Item name="search" rules={[{ required: true, message: 'Ingrese un código de certificado'}]}>
                                 <Input.Search 
                                     size='large' 
                                     placeholder='Número de certificado' 
                                     loading={searchMutation.isPending}
-                                    onSearch={()=> searchMutation.mutate}
+                                    onSearch={()=> form.submit() }
                                 />
                             </Form.Item>
                         </Form>
