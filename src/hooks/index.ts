@@ -5,3 +5,4 @@ export * from './useTemplate.hook';
 export * from './useStudents.hook';
 export * from './useStudentsCourses';
 export * from './useCoursesModules.hook';
+export * from './useSearch.hook';

@@ -36,11 +36,13 @@ const SessionProvider: FC<ISessionContext> = ({ children }) => {
     const [logged] = useState<IAuth>();
     const navigate = useNavigate();
     const { message } = App.useApp();
-    const { pathname } = useLocation()
+    const { pathname, search } = useLocation()
     const token = window.localStorage.getItem('session');
     
     const initialize = () => {
         if(token) return readSession.mutate();
+        if( pathname ) return setUrlRedirect(`${ pathname + search }`);
+        
         return setUrlRedirect('/login')
     }
 
