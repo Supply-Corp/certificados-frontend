@@ -2,12 +2,14 @@
 import { useEffect, useState } from "react";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { CoursesService, CustomError, StudentCourse, StudentsCoursesService, TemplatesService, UserCourse } from "../services";
-import { App, Button, Form, Image, Popconfirm, Row } from "antd";
-import { BsPencil, BsTrash } from "react-icons/bs";
+import { App, Button, Form, Image, Popconfirm, Row, Tooltip } from "antd";
+import { BsClipboard, BsClipboard2, BsPencil, BsTrash } from "react-icons/bs";
 import { useDebounce } from 'usehooks-ts'
 import { AxiosError } from "axios";
 import { useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { UserService } from "../services/user.service";
+import { ApiService } from "../services/api.service";
 
 export const useStudentsCourses = () => {
 
@@ -18,6 +20,33 @@ export const useStudentsCourses = () => {
     const [limit] = useState(10);
     const { id } = useParams();
     const url = import.meta.env.VITE_URL_FRONTEND;
+    const [generate, setGenerate] = useState(0);
+    const [generateConstancy, setGenerateConstancy] = useState(0);
+
+    const serviceCertified = new UserService();
+
+    const downloadOne = useMutation({
+        mutationFn: (identifier: string) => serviceCertified.downloadCertified(identifier),
+        onSuccess: (file) => {
+            ApiService.download(`../certified/${ file }`, file);
+            setGenerate(0)
+        },
+        onError: () => {
+            setGenerate(0)
+        }
+    })
+
+    const downloadTwo = useMutation({
+        mutationFn: (identifier: string) => serviceCertified.downloadConstancy(identifier),
+        onSuccess: (file) => {
+            ApiService.download(`../constancy/${ file }`, file);
+            setGenerateConstancy(0)
+        },
+        onError: () => {
+            setGenerateConstancy(0)
+        }
+    })
+
 
     const columns = [
         {
@@ -48,14 +77,41 @@ export const useStudentsCourses = () => {
         {
             title: 'Opciones',
             key: 'options',
+            width: 200,
             render: (record: StudentCourse) => <Row style={{ gap: 8 }}>
+                <Tooltip placement="top" title="Certificado">
+                    <Button 
+                        shape="circle" 
+                        type="default" 
+                        icon={<BsClipboard />}
+                        loading={record.id === generate} 
+                        onClick={() => {
+                            downloadOne.mutate(record.identifier);
+                            setGenerate(record.id)
+                        }}
+                    />
+                </Tooltip>
+                
+                <Tooltip placement="top" title="Constancia">
+                    <Button 
+                        shape="circle" 
+                        type="default" 
+                        icon={<BsClipboard2 />}
+                        loading={record.id === generateConstancy} 
+                        onClick={() => {
+                            downloadTwo.mutate(record.identifier);
+                            setGenerateConstancy(record.id)
+                        }}
+                    />
+                </Tooltip>
+
+
                 <Button 
                     shape="circle" 
                     type="primary" 
                     icon={<BsPencil />}
                     onClick={()=>editRegister(record)}
                 />
-
                 <Popconfirm
                     title="Seguro desea eliminar?"
                     cancelText="No"
