@@ -41,8 +41,7 @@ const SessionProvider: FC<ISessionContext> = ({ children }) => {
     
     const initialize = () => {
         if(token) return readSession.mutate();
-        if( pathname ) return setUrlRedirect(`${ pathname + search }`);
-        
+        if( pathname !== '/') return setUrlRedirect(`${ pathname + search }`);
         return setUrlRedirect('/login')
     }
 
