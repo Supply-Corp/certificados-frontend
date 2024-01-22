@@ -1,6 +1,6 @@
+import { FC, ReactNode } from "react"
 import { Navigate, Route, Routes } from "react-router-dom"
 import { useSession } from "../context/useContext"
-import { FC, ReactNode } from "react"
 import { LayoutAdmin } from "../components"
 import { AdminView, CoursesModulesView, CoursesView, StudentsCoursesView, StudentsView, TemplateView } from "../views"
 import { LoadingContainer } from "../containers"
@@ -22,7 +22,7 @@ export const AdminRoutes = () => {
     )
 }
 
-export const PrivateRoute: FC<{ children: ReactNode}> = ({ children }) => {    
+const PrivateRoute: FC<{ children: ReactNode}> = ({ children }) => {    
     const { user, logged } = useSession();
     const role = user?.user?.role;
 
@@ -31,6 +31,6 @@ export const PrivateRoute: FC<{ children: ReactNode}> = ({ children }) => {
     } else if( role === 'ADMIN' ) {
         return children;
     } else if( role === 'USER' ) {
-        return <Navigate to="/user" />
+        return <Navigate to="/user" />;
     }
 }
