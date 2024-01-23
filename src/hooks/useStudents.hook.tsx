@@ -15,6 +15,8 @@ export const useStudent = () => {
     const { message } = App.useApp();
     const [page, setPage] = useState(1);
     const [limit] = useState(10);
+    
+    const [setFileList] = useState<any>([]);
 
     const columns = [
         {
@@ -134,6 +136,24 @@ export const useStudent = () => {
         setModalCreate(true);
         setEdit(true);
     }
+    
+
+    const [modalImportation, setModalImportation] = useState(false);
+    const [formImportation] = Form.useForm();
+
+    const mutationImport = useMutation({
+        mutationFn: (data: { file: { file: File} }) => service.import(data.file.file),
+        onSuccess: (data) => { 
+            message.success(`${ data.msg }`);
+            formImportation.resetFields();
+            setModalImportation(false);
+            list.refetch();
+        },
+        onError: (error) => {
+            CustomError.Error(error, message);
+            setFileList([]);
+        }
+    });
 
     useEffect(()=>{
         if( !modalCreate ) {
@@ -154,5 +174,12 @@ export const useStudent = () => {
         form,
         edit,
         onUpdate,
+
+        setFileList,
+        mutationImport,
+
+        modalImportation,
+        setModalImportation,
+        formImportation
     }
 }

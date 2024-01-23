@@ -41,6 +41,19 @@ export class StudentsService {
         }
     };
 
+    import = async (info: File):Promise<{ msg: string }> => {
+        try {
+
+            const formData = new FormData();
+            formData.append('file', info)
+
+            const data = await ApiService.post(`/student/massive`, formData);
+            return data;
+        } catch (error) {
+            throw error as AxiosError;
+        }
+    };
+
     update = async (info: Student):Promise<Student | AxiosError> => {
         try {
             const data = await ApiService.put(`/user-courses/user/${ info.id }`, info);
